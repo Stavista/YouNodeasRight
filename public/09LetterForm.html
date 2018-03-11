@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Rock Paper Scissors From</title>
+    </head>
+    <body>
+        <form action="/letter" method="get">
+            <h1>Fill out the following information to find our postage:</h1>
+            <h2>Select your letter type:</h2>
+            <select name="letter_choice">
+                <option value="stamped">Stamped</option>
+                <option value="metered">Metered</option>
+                <option value="postcard">Postcard</option>
+            </select>
+            <h2>Weight Not Over (oz.):</h2>
+            <select name="weight">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="3.5">3.5</option>
+            </select>
+            <br/><br/>
+            <input type="submit" value="Calculate">
+        </form>
+    </body>
+</html>
