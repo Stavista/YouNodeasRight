@@ -1,7 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\controllers",
+    "\\models",
+    "\\views"
   ],
-  "SelectedNode": "\\.gitignore",
+  "SelectedNode": "\\controllers\\10C-bpm.js",
   "PreviewInSolutionExplorer": false
 }

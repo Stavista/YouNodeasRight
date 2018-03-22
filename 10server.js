@@ -2,8 +2,8 @@ var express = require('express');
 var app = express();
 
 var bpmController = require('./controllers/10C-bpm.js'); 
-//var pg = require("pg"); //Postgres
-//const connectionString = "postgres://temp:pass@localhost:5000/businessList";
+var pg = require("pg"); //Postgres
+const connectionString = "postgres://temp:pass@localhost:5000/businessList";
 
 var bodyParser = require('body-parser');
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
