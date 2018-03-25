@@ -1,12 +1,19 @@
 //From database
 var pg = require("pg"); //Postgres
-const connectionString = "postgres://temp:pass@localhost:5432/postgres";
+const { Client } = require('pg');
 
+//const client = new Client({
+//    connectionString: process.env.DATABASE_URL,
+//    ssl: true,
+//} || "postgres://temp:pass@localhost:5432/postgres");
+const connectionString = process.env.DATABASE_URL || "postgres://temp:pass@localhost:5432/postgres";
+//ADD ALL POOL STUFF
+//var { Pool } = require('pg');
 
 //PULL (GET)
 //Pull business list
-function getBusinessList(callback) {
-
+function getBusinessName(business_id, callback) {
+    
     var client = new pg.Client(connectionString);
     client.connect(function (err) {
         if (err) {
@@ -14,9 +21,10 @@ function getBusinessList(callback) {
             console.log(err);
             callback(err, null);
         }
-        var sql = "SELECT name, id FROM business";
+        var sql = "SELECT name FROM business WHERE id = $1::int";
+        var params = [business_id];
 
-        var query = client.query(sql, function (err, result) {
+        var query = client.query(sql, params, function (err, result) {
             // we are now done getting the data from the DB, disconnect the client
             client.end(function (err) {
                 if (err) throw err;
@@ -247,7 +255,7 @@ function updateLiabilites(l, callback) {
 }
 
 module.exports = {
-    getBusinessList: getBusinessList,
+    getBusinessName: getBusinessName,
     getAssets: getAssets,
     getLiabilities: getLiabilities,
     getSummary: getSummary,

@@ -1,11 +1,13 @@
 var bizModel = require('../models/10M-bpm.js');
 
 //Business List
-function handleBusinessList(request, response) {
-    console.log("Returning the business list");
+function handleBusinessName(request, response) {
+    var id = request.params.id;
 
-    bizModel.getBusinessList(function (error, result) {
-        if (error || result == null) {
+    console.log("Returning the business Name");
+
+    bizModel.getBusinessName(id, function (error, result) {
+        if (error || result === null) {
             response.status(500).json({ success: false, data: error });
         } else {
             response.status(200).json(result);
@@ -20,9 +22,10 @@ function handleAssets(request, response) {
     console.log("Returning assets for business: " + id);
 
     var result = bizModel.getAssets(id, function (error, result) {
-        if (error || result == null) {
+        if (error || result === null) {
             response.status(500).json({ success: false, data: error });
         } else {
+            console.log(result);
             response.status(200).json(result);
         }
     });
@@ -35,7 +38,7 @@ function handleLiabilities(request, response) {
     console.log("Returning Liabilities for business: " + id);
 
     var result = bizModel.getLiabilities(id, function (error, result) {
-        if (error || result == null) {
+        if (error || result === null) {
             response.status(500).json({ success: false, data: error });
         } else {
             response.status(200).json(result);
@@ -50,7 +53,7 @@ function handleSummary(request, response) {
     console.log("Returning Summary for business: " + id);
 
     var result = bizModel.getSummary(id, function (error, result) {
-        if (error || result == null) {
+        if (error || result === null) {
             response.status(500).json({ success: false, data: error });
         } else {
             var assets = result.total_assets;
@@ -68,7 +71,7 @@ function handleSummary(request, response) {
                 ratio: ratio,
                 ownersContribution: ownersContribution,
                 creditorsContribution: creditorsContribution
-            }
+            };
             response.status(200).json(summary);
         }
     });
@@ -81,9 +84,10 @@ function handleDataLog(request, response) {
     console.log("Returning Data Log for business: " + id);
 
     var result = bizModel.getDataLog(id, function (error, result) {
-        if (error || result == null) {
+        if (error || result === null) {
             response.status(500).json({ success: false, data: error });
-        } else {
+        }
+        else {
             var assets = result.total_assets;
             var liabilities = result.total_assets;
             var workingCapital = assets - liabilities;
@@ -101,7 +105,7 @@ function handleDataLog(request, response) {
                 creditorsContribution: creditorsContribution,
                 accountsReceivable: result.accounts_receivable,
                 accountsPayable: result.accounts_payable
-            }
+            };
             response.status(200).json(summary);
         }
     });
@@ -114,15 +118,15 @@ function sendAssets(request, response) {
 
     console.log('sending Assets');
     var assets = {
-        id : request.params.id,
-        date : request.params.date,
-        c_e : request.params.c_e,
-        a_r : request.params.a_r,
-        inv : request.params.inv,
-        other : request.params.other
-    }
+        id: request.params.id,
+        date: request.params.date,
+        c_e: request.params.c_e,
+        a_r: request.params.a_r,
+        inv: request.params.inv,
+        other: request.params.other
+    };
     var result = bizModel.updateAssets(assets, function (error, result) {
-        if (error || result == null) {
+        if (error || result === null) {
             response.status(500).json({ success: false, data: error });
         } else {
             response.status(200).json(result);
@@ -143,9 +147,9 @@ function sendLiabilities(request, response) {
         lto: request.params.lto,
         leases: request.params.leases,
         other: request.params.other
-    }
+    };
     var result = bizModel.updateLiabilities(liabilities, function (error, result) {
-        if (error || result == null) {
+        if (error || result === null) {
             response.status(500).json({ success: false, data: error });
         } else {
             response.status(200).json(result);
@@ -154,7 +158,7 @@ function sendLiabilities(request, response) {
 }
 
 module.exports = {
-    handleBusinessList: handleBusinessList,
+    handleBusinessName: handleBusinessName,
     handleAssets: handleAssets,
     handleLiabilities: handleLiabilities,
     handleSummary: handleSummary,

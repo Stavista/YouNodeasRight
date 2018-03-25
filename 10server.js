@@ -2,8 +2,8 @@ var express = require('express');
 var app = express();
 
 var bpmController = require('./controllers/10C-bpm.js'); 
-var pg = require("pg"); //Postgres
-const connectionString = "postgres://temp:pass@localhost:5000/businessList";
+//var pg = require("pg"); //Postgres
+//const connectionString = "postgres://temp:pass@localhost:5432/businessList";
 
 var bodyParser = require('body-parser');
 app.use( bodyParser.json() );       // to support JSON-encoded bodies
@@ -17,7 +17,7 @@ app.set('port', (process.env.PORT || 5000));
 app.use(express.static(__dirname + "/public"));
 
 //Gets (requests)
-app.get('/businessList', bpmController.handleBusinessList); //List of Businesses
+app.get('/businessName/:id', bpmController.handleBusinessName); //List of Businesses
 app.get('/assets/:id', bpmController.handleAssets); //assets for specified business
 app.get('/liabilities/:id', bpmController.handleLiabilities); //liabilities for specified business
 app.get('/summary/:id', bpmController.handleSummary); //business summary for specified business
