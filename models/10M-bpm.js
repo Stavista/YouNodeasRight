@@ -6,9 +6,14 @@ const { Client } = require('pg');
 //    connectionString: process.env.DATABASE_URL,
 //    ssl: true,
 //} || "postgres://temp:pass@localhost:5432/postgres");
-const herokuConnectionString = { connectionString: process.env.DATABASE_URL, ssl: true };
-const localPostgresConnectionString = "postgres://temp:pass@localhost:5432/postgres";
-const connectionString = herokuConnectionString || localPostgresConnectionString;
+//const herokuConnectionString = { connectionString: process.env.DATABASE_URL, ssl: true };
+//const localPostgresConnectionString = "postgres://temp:pass@localhost:5432/postgres";
+//const connectionString = herokuConnectionString || localPostgresConnectionString;
+const connectionString = process.env.DATABASE_URL || "postgres://temp:pass@localhost:5432/postgres";
+
+//const pool = newPool({
+//    connectionString: connectionString
+//});
 //ADD ALL POOL STUFF
 //var { Pool } = require('pg');
 
