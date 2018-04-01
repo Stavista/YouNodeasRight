@@ -5,15 +5,7 @@
   <meta charset='utf-8' />
   <script src='bpm.js'></script>
   <title>Business Pulse Manager</title>
-  <style>
-    .hidden {
-      display: none;
-    }
-
-    .unhidden {
-      display: block;
-    }
-  </style>
+  <link rel="stylesheet" type="text/css" href="stylesheets\bpm.css" />
 </head>
 <body>
 
@@ -23,67 +15,77 @@
   <select id="bizSelect" onchange="bizSelect()">
     <option disabled selected value> -- Select a Business -- </option>
     <option value="1"><h1>Frozen Frame</h1></option>
-    <option value="2"><h1>Coupon App</h1></option>
-    <option value="3"><h1>Booth</h1></option>
-    <option value="4"><h1>PTTable</h1></option>
+    <option value="2"><h1>Dealions</h1></option>
+    <option value="3"><h1>Meta Booth</h1></option>
+    <option value="4"><h1>PorTable</h1></option>
   </select>
   <br />
 
   <!-- Update Assets and Liabilities Buttons are hidden until a business is selected -->
-  <div id="updateButtons" class="hidden">
-    <h2>What's your current financial standing?</h2>
-    <p>Note that once you commit to Log, you will not be able to alter or remove financial information logged</p>
-    <form>
+  <div id="show" class="hidden">
 
-      Date: <input id="inputDate" type="date" name="date"><br />
+    <div id="updateForms" class="hidden">
+      <h2>What's your current financial standing?</h2>
+      <p>Note that once you commit to Log, you will not be able to alter or remove financial information logged</p>
 
-      <h3>Assets</h3>
-      Cash and Equivalents:<input  id="inputCash&Equivalents" type="number" name="c_e" required><br />
-      Accounts Recievable: <input  id="inputAccountsRecievable" type="number" name="ar" required><br />
-      Inventory: <input  id="inputInventory" type="number" name="inventory" required><br />
-      Other: <input  id="inputAssetsOther" type="number" name="a_other" required><br />
-      
-      <input type="submit" class='financeButton' onclick='insertAssets()' value="Insert Assets Log">
+        Date: <input id="inputDate" type="date" name="date"><br />
 
-      <br /><br />
-    </form>
+        <h3>Assets</h3>
+        Cash and Equivalents:<input id="inputCash&Equivalents" type="number" name="c_e" required><br />
+        Accounts Recievable: <input id="inputAccountsRecievable" type="number" name="ar" required><br />
+        Inventory: <input id="inputInventory" type="number" name="inventory" required><br />
+        Other: <input id="inputAssetsOther" type="number" name="a_other" required><br />
+        <br />
+        <button class='financeButton' onclick='insertAssets()'>Insert Assets Log</button>
 
-    <form>
-    <h3>Liabilities</h3>
+        <br /><br />
 
-    Accounts Payable: <input  id="inputAccountsPayable" type="number" name="ap" required><br />
-    Debt Itemization: <input  id="inputDebtItemization" type="number" name="di" required><br />
-    Long Term Obligations: <input  id="inputLongTermObligations" type="number" name="lto" required><br />
-    Leases: <input  id="inputLeases" type="number" name="leases" required><br />
-    Other: <input  id="inputLiabilitiesOther" type="number" name="l_other" required><br />
+        <h3>Liabilities</h3>
+
+        Accounts Payable: <input id="inputAccountsPayable" type="number" name="ap" required><br />
+        Debt Itemization: <input id="inputDebtItemization" type="number" name="di" required><br />
+        Long Term Obligations: <input id="inputLongTermObligations" type="number" name="lto" required><br />
+        Leases: <input id="inputLeases" type="number" name="leases" required><br />
+        Other: <input id="inputLiabilitiesOther" type="number" name="l_other" required><br />
+        <br />
+
+        <button class='financeButton' onclick='insertLiabilities()'>Insert Liabilities Log</button>
+        <br />
+        <br />
+        <button class='financeButton' onclick='insertLiabilities(); insertAssets();'>Insert to Both</button>
+    </div>
     <br />
 
-    <input type="submit" class='financeButton' onclick='insertLiabilities()' value="Insert Liabilities Log">
-    <!--<button class='financeButton' onclick='insertLiabilities(); insertAssets();'>Insert Log to Both</button>-->
-    </form>
-    <!-- possibly add the option to hide and unhide insert forms -->
+    <button id="updateButton" onclick="hide(this.id, 'updateForms')">Update Assets or Liabilities</button>
+    <!-- end of hidden div until business is selected -->
+    <h3>Financial History: </h3>
+    <button class='financeButton' id="assets" type='submit' onclick='assets()'>View Asset History</button>
+    <button class='financeButton' id="liabilities" type='submit' onclick='liabilities()'>View Liability History</button>
+    <!--<button class='financeButton' id="dataLog" type='submit' onclick='dataLog()'>Data Log</button>-->
+    <button class='financeButton' id="summary" type='submit' onclick='summary()'>Summary</button>
 
+    <!-- Asset History Table HIDDEN -->
+    <div id="hideAssetHistory" class="hidden">
+      <h3>Asset History For <span class="bizName"></span></h3>
+      <span id="assetTable"></span>
+    </div>
+
+    <!-- Liability History Table HIDDEN -->
+    <div id="hideLiabilityHistory" class="hidden">
+      <h3>Liability History For <span class="bizName"></span></h3>
+      <span id="liabilityTable"></span>
+    </div>
+
+    <!-- Data Log Table HIDDEN
+  <div id="hideDataLog" class="hidden">
+    <h3>Data Log For <span class="bizName"></span></h3>
+    <span id="dataLogTable"></span>
+  </div>-->
+    <!-- Liability History Table HIDDEN -->
+    <div id="hideSummary" class="hidden">
+      <h3>Financial Summary For <span class="bizName"></span></h3>
+      <span id="summaryTable"></span>
+    </div>
   </div>
-  <!-- end of hidden div until business is selected -->
-  </form>
-  <h3>Financial History: </h3>
-  <button class='financeButton' id="assets" type='submit' onclick='assets()'>View Detailed History of Asset</button>
-  <button class='financeButton' type='submit' onclick='liabilities()'>Liabilities</button>
-  <button class='financeButton' type='submit' onclick='dataLog()'>Data Log</button>
-  <button class='financeButton' type='submit' onclick='summary()'>Summary</button>
-
-  <h3><span class="bizName"></span>'s Asset History</h3>
-  <table>
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>Cash and Equivalents</th>
-        <th>Accounts Recievable</th>
-        <th>Inventory</th>
-        <th>Other</th>
-      </tr>
-    </thead>
-  </table>
-
 </body>
 </html>

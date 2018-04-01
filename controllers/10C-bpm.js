@@ -25,7 +25,7 @@ function handleAssets(request, response) {
         if (error || result === null) {
             response.status(500).json({ success: false, data: error });
         } else {
-            console.log(result);
+            console.log("Controler Result: " + result);
             response.status(200).json(result);
         }
     });
@@ -41,6 +41,7 @@ function handleLiabilities(request, response) {
         if (error || result === null) {
             response.status(500).json({ success: false, data: error });
         } else {
+            console.log("Controler Result: " + result);
             response.status(200).json(result);
         }
     });
@@ -49,30 +50,40 @@ function handleLiabilities(request, response) {
 //Business Summary for specified Business
 function handleSummary(request, response) {
     var id = request.params.id;
+    var calculations = [];
 
     console.log("Returning Summary for business: " + id);
 
     var result = bizModel.getSummary(id, function (error, result) {
         if (error || result === null) {
             response.status(500).json({ success: false, data: error });
-        } else {
-            var assets = result.total_assets;
-            var liabilities = result.total_liabilities;
-            var workingCapital = assets - liabilities;
-            var ratio = assets / liabilities;
-            var ownersContribution = workingCapital / (liabilities + workingCapital);
-            var creditorsContribution = liabilities / (liabilities + workingCapital);
+        }
+        else {
+            console.log("FROM MODEL: " + result);
+            for (i in result) {
+                var assets = result[i].total_assets;
+                var liabilities = result[i].total_assets;
+                var workingCapital = assets - liabilities;
+                var ratio = assets / liabilities;
+                var ownersContribution = workingCapital / (liabilities + workingCapital);
+                var creditorsContribution = liabilities / (liabilities + workingCapital);
 
-            var summary = {
-                business_id: result.business_id,
-                date: result._date,
-                totalLiabilities: liabilities,
-                workingCapital: workingCapital,
-                ratio: ratio,
-                ownersContribution: ownersContribution,
-                creditorsContribution: creditorsContribution
+                var summary = {
+                    date: result[i]._date,
+                    totalAssets: assets,
+                    totalLiabilities: liabilities,
+                    workingCapital: workingCapital,
+                    ratio: ratio,
+                    ownersContribution: ownersContribution,
+                    creditorsContribution: creditorsContribution,
+                    accountsRecievable: result[i].accounts_recievable,
+                    accountsPayable: result[i].accounts_payable
+                }
+                calculations.push(summary);
             };
-            response.status(200).json(summary);
+            //calculatedResult = JSON.stringify(calculations);
+            console.log(calculations);
+            response.status(200).json(calculations);
         }
     });
 }
@@ -82,31 +93,36 @@ function handleDataLog(request, response) {
     var id = request.params.id;
 
     console.log("Returning Data Log for business: " + id);
-
+    var calculations = [];
     var result = bizModel.getDataLog(id, function (error, result) {
         if (error || result === null) {
             response.status(500).json({ success: false, data: error });
         }
         else {
-            var assets = result.total_assets;
-            var liabilities = result.total_assets;
-            var workingCapital = assets - liabilities;
-            var ratio = assets / liabilities;
-            var ownersContribution = workingCapital / (liabilities + workingCapital);
-            var creditorsContribution = liabilities / (liabilities + workingCapital);
-
-            var summary = {
-                business_id: result.business_id,
-                date: result._date,
-                totalLiabilities: liabilities,
-                workingCapital: workingCapital,
-                ratio: ratio,
-                ownersContribution: ownersContribution,
-                creditorsContribution: creditorsContribution,
-                accountsReceivable: result.accounts_receivable,
-                accountsPayable: result.accounts_payable
-            };
-            response.status(200).json(summary);
+            //console.log("FROM MODEL: " + result);
+            //for (i in result) {
+            //    var assets = result[i].total_assets;
+            //    var liabilities = result[i].total_assets;
+            //    var workingCapital = assets - liabilities;
+            //    var ratio = assets / liabilities;
+            //    var ownersContribution = workingCapital / (liabilities + workingCapital);
+            //    var creditorsContribution = liabilities / (liabilities + workingCapital);
+            //    //date,asset Total, Liability Total, Working Capital, Cap% , ratio, cash and E, Acnt Recievable, acnt Pay
+            //    var summary = {
+            //        date: result[i]._date,
+            //        totalLiabilities: liabilities,
+            //        workingCapital: workingCapital,
+            //        ratio: ratio,
+            //        ownersContribution: ownersContribution,
+            //        creditorsContribution: creditorsContribution,
+            //        accountsRecievable: result[i].accounts_recievable,
+            //        accountsPayable: result[i].accounts_payable
+            //    }
+            //    calculations.push(summary);
+            //};
+            ////calculatedResult = JSON.stringify(calculations);
+            //console.log(calculations);
+            response.status(200).json({ success: true });
         }
     });
 

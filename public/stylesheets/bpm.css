@@ -1,0 +1,22 @@
+﻿body
+{
+}
+
+table {
+    width: 90%;
+}
+th{
+    background-color: #4CAF50;
+    color: white;
+}
+td {
+    border-bottom: 1px solid #808080;
+    padding: 15px;
+    vertical-align: bottom;
+    text-align: left;
+}
+tr:nth-child(odd) {background-color: #f2f2f2;}
+
+.hidden { display: none;}
+
+.unhidden { display: block;}

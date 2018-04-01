@@ -20,7 +20,7 @@ const connectionString = process.env.DATABASE_URL || "postgres://temp:pass@local
 //PULL (GET)
 //Pull business list
 function getBusinessName(business_id, callback) {
-    
+
     var client = new pg.Client(connectionString);
     client.connect(function (err) {
         if (err) {
@@ -118,40 +118,29 @@ function getLiabilities(business_id, callback) {
 
 //Business Summary: pull info from liablities and assets for specified business
 function getSummary(business_id, callback) {
+    //var result = [];
+    //for (row in liabilityList) {
+        
+    //    liabilityList[row]._date + "</td>";
+    //     liabilityList[row].accounts_payable + "</td>";
+    //     liabilityList[row].debt_itemization + "</td>";
+    //     liabilityList[row].long_term_obligations + "</td>";
+    //     liabilityList[row].leases + "</td>";
+    //     liabilityList[row].other + "</td>";
+         
+    //}
 
-    //var client = new pg.Client(connectionString);
-    //client.connect(function (err) {
-    //    if (err) {
-    //        console.log("Error connecting to DB: ")
-    //        console.log(err);
-    //        callback(err, null);
-    //    }
-    //    var sql = 'SELECT * FROM liabilities l JOIN business b ON l.business_id = b.id WHERE b.id = $1::int ORDER BY _date DESC'
-    //    var params = [business_id];
-
-    //    var query = client.query(sql, params, function (err, result) {
-    //        client.end(function (err) {
-    //            if (err) throw err;
-    //        });
-
-    //        if (err) {
-    //            console.log("Error in query: ")
-    //            console.log(err);
-    //            callback(err, null);
-    //        }
-
-    //        console.log("Found result: " + JSON.stringify(result.rows));
-
-    //        callback(null, result.rows);
-    //    });
-    //});
-
-    var result = {
-        _date: "01/01/2018",
-        business_id: business_id,
-        total_liabilities: 15000,
-        total_assets: 250000
-    };
+    var result = [
+        {   _date: "01/01/2018",
+            business_id: business_id,
+            total_liabilities: 15000,
+            total_assets: 250000
+        },{
+            _date: "01/01/2018",
+            business_id: business_id,
+            total_liabilities: 15000,
+            total_assets: 250000
+        }];
     callback(null, result);
 
     //return result;
@@ -185,14 +174,21 @@ function getDataLog(business_id, callback) {
     //    });
     //});
 
-    var result = {
+    var result = [{
         _date: "01/01/2018",
         business_id: business_id,
         total_liabilities: 15000,
         total_assets: 250000,
-        accounts_receivable: 12000,
+        accounts_recievable: 12000,
         accounts_payable: 10000
-    };
+    }, {
+        _date: "01/01/2018",
+        business_id: business_id,
+        total_liabilities: 15000,
+        total_assets: 250000,
+        accounts_recievable: 12000,
+        accounts_payable: 10000
+    }];
     callback(null, result);
 
     //return result;

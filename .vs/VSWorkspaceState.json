@@ -4,9 +4,8 @@
     "\\controllers",
     "\\models",
     "\\public",
-    "\\views\\pages",
-    "\\views\\partials"
+    "\\public\\stylesheets"
   ],
-  "SelectedNode": "\\models\\10M-bpm.js",
+  "SelectedNode": "\\public\\bpm.js",
   "PreviewInSolutionExplorer": false
 }
