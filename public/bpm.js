@@ -11,12 +11,15 @@ function getBusinessId() {
 function bizSelect() {
     var bizId = getBusinessId();
     //Make sure all formats go hidden so the past business info doesn't show
-    var item = document.getElementById('hideAssetHistory');
-    item.className = 'hidden';
-    var item = document.getElementById('hideLiabilityHistory');
-    item.className = 'hidden';
-    var item = document.getElementById('hideSummary');
-    item.className = 'hidden';
+    document.getElementById('hideAssetHistory').className = 'hidden';
+    document.getElementById('assets').innerText = 'View Asset History';
+
+    document.getElementById('hideLiabilityHistory').className = 'hidden';
+    document.getElementById('liabilities').innerText = 'View Liability History';
+
+    document.getElementById('hideSummary').className = 'hidden';
+    document.getElementById('summary').innerText = 'View Summary';
+
 
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
@@ -54,7 +57,7 @@ function assets() {
                 var text = "<table><tr>";
                 text += "<th>Date</th>";
                 text += "<th>Cash and Equivalents</th>";
-                text += "<th>Accounts Recievable</th>";
+                text += "<th>Accounts Receivable</th>";
                 text += "<th>Inventory</th>";
                 text += "<th>Other</th></tr><tbody>";
                        
@@ -65,10 +68,10 @@ function assets() {
                     text += "<tr>";
                     text += "<td>" + formatedDate + "</td>";
                     //text += "<td>" + assetList[row]._date + "</td>";
-                    text += "<td>$" + assetList[row].cash_and_equivalents + "</td>";
-                    text += "<td>$" + assetList[row].accounts_recievable + "</td>";
-                    text += "<td>$" + assetList[row].inventory + "</td>";
-                    text += "<td>$" + assetList[row].other + "</td>";
+                    text += "<td>$" + Number(assetList[row].cash_and_equivalents).toFixed(2) + "</td>";
+                    text += "<td>$" + Number(assetList[row].accounts_receivable).toFixed(2) + "</td>";
+                    text += "<td>$" + Number(assetList[row].inventory).toFixed(2) + "</td>";
+                    text += "<td>$" + Number(assetList[row].other).toFixed(2) + "</td>";
                 text += "</tr>";
                 }
                 text += "</tbody ></table >";
@@ -109,11 +112,11 @@ function liabilities() {
                     text += "<tr>";
                     text += "<td>" + formatedDate + "</td>";
                     //text += "<td>" + liabilityList[row]._date + "</td>";
-                    text += "<td>$" + liabilityList[row].accounts_payable + "</td>";
-                    text += "<td>$" + liabilityList[row].debt_itemization + "</td>";
-                    text += "<td>$" + liabilityList[row].long_term_obligations + "</td>";
-                    text += "<td>$" + liabilityList[row].leases + "</td>";
-                    text += "<td>$" + liabilityList[row].other + "</td>";
+                    text += "<td>$" + Number(liabilityList[row].accounts_payable).toFixed(2) + "</td>";
+                    text += "<td>$" + Number(liabilityList[row].debt_itemization).toFixed(2) + "</td>";
+                    text += "<td>$" + Number(liabilityList[row].long_term_obligations).toFixed(2) + "</td>";
+                    text += "<td>$" + Number(liabilityList[row].leases).toFixed(2) + "</td>";
+                    text += "<td>$" + Number(liabilityList[row].other).toFixed(2) + "</td>";
                     text += "</tr>";
                 }
                 text += "</tbody ></table >";
@@ -153,20 +156,42 @@ function summary() {
 
                 var row;
                 for (row in summaryList) {
-                    var formatedDate = formatDate(summaryList[row]._date);
+                    var formatedDate = formatDate(summaryList[row].date);
+                    var assets = Number(summaryList[row].totalAssets).toFixed(2);
+                    var liabilities = Number(summaryList[row].totalLiabilities).toFixed(2);
+                    var workingCapital = Number(summaryList[row].workingCapital).toFixed(2);
+                    var ratio = Number(summaryList[row].ratio).toFixed(2);
+                    var owner = Number(summaryList[row].ownersContribution).toFixed(2);
+                    var credit = Number(summaryList[row].creditorsContribution).toFixed(2);
+                    var negative = summaryList[row].negative;
 
-                    text += "<tr>";
-                    text += "<td>" + formatedDate + "</td>";
-                    text += "<td>$" + summaryList[row].totalAssets + "</td>";
-                    text += "<td>$" + summaryList[row].totalLiabilities + "</td>";
-                    text += "<td>$" + summaryList[row].workingCapital + "</td>";
-                    text += "<td>" + summaryList[row].ratio + "</td>";
-                    text += "<td>" + summaryList[row].ownersContribution + "%</td>";
-                    text += "<td>" + summaryList[row].creditorsContribution + "%</td>";
-                    text += "</tr>";
+
+                    if (negative == "F") {
+                        text += "<tr>";
+                        text += "<td>" + formatedDate + "</td>";
+                        text += "<td>$" + assets + "</td>";
+                        text += "<td>$" + liabilities + "</td>";
+                        text += "<td>$" + workingCapital + "</td>";
+                        text += "<td>" + ratio + "</td>";
+                        text += "<td>" + owner + "%</td>";
+                        text += "<td>" + credit + "%</td>";
+                        text += "</tr>";
+                    }
+                    else if (negative == "T"){
+                        text += "<tr>";
+                        text += "<td>" + formatedDate + "</td>";
+                        text += "<td>$" + assets + "</td>";
+                        text += "<td>$" + liabilities + "</td>";
+                        text += "<td>-$" + workingCapital + "</td>";
+                        text += "<td>" + ratio + "</td>";
+                        text += "<td>-"+ owner + "%</td>";
+                        text += "<td>" + credit + "%</td>";
+                        text += "</tr>";
+                    }
+                    
                 }
                 text += "</tbody ></table >";
-                console.log(text);
+                //console.log(text);
                 document.getElementById("summaryTable").innerHTML = text;
             }
             else if (xmlhttp.status == 400)
@@ -212,7 +237,7 @@ function summary() {
 //                    text += "<td>" + dataLogList[row].ratio + "%</td>";
 //                    text += "<td>" + dataLogList[row].ownersContribution + "</td>";
 //                    text += "<td>" + dataLogList[row].creditorsContribution + "</td>";
-//                    text += "<td>$" + dataLogList[row].accountsRecievable + "</td>";
+//                    text += "<td>$" + dataLogList[row].accountsReceivable + "</td>";
 //                    text += "<td>$" + dataLogList[row].accountsPayable + "</td>";
 //                    text += "</tr>";
 //                }
@@ -236,7 +261,7 @@ function insertAssets() {
     var bizId = getBusinessId();
     //'/updateAssets/:id/:date/:c_e/:a_r/:inv/:other'
     var c_e = document.getElementById("inputCash&Equivalents").value;
-    var a_r = document.getElementById("inputAccountsRecievable").value;
+    var a_r = document.getElementById("inputAccountsReceivable").value;
     var i = document.getElementById("inputInventory").value;
     var o = document.getElementById("inputAssetsOther").value;
     var d = document.getElementById("inputDate").value;
@@ -255,7 +280,7 @@ function insertAssets() {
             }
             else if (xmlhttp.status == 404) {
                 console.log(result);
-                alert('Your Log was not entered due to an empty field or invalid entry.');
+                alert('Your ASSET Log was not entered due to an empty field or invalid entry.');
             }
             else {
                 alert('Always Double Check to Make Sure Your Asset Log Was Inserted!')
@@ -267,7 +292,7 @@ function insertAssets() {
     xmlhttp.send();
 
     document.getElementById("inputCash&Equivalents").value = "";
-    document.getElementById("inputAccountsRecievable").value = "";
+    document.getElementById("inputAccountsReceivable").value = "";
     document.getElementById("inputInventory").value = "";
     document.getElementById("inputAssetsOther").value = "";
 }
@@ -296,7 +321,7 @@ function insertLiabilities() {
             }
             else if (xmlhttp.status == 404) {
                 console.log(result);
-                alert('Your Log was not entered due to an empty field or invalid entry.');
+                alert('Your LIABILITY Log was not entered due to an empty field or invalid entry.');
             }
             else {
                 alert('Always Double Check to Make Sure Your Liability Log Was Inserted!')
@@ -315,7 +340,7 @@ function insertLiabilities() {
 }
 
 /*****   HIDE AND UNHIDE   *******************************
-*   For future hiding of tables maybe?      */
+*   Hide, Unhide, and Change text in button to reflect that      */
 function hide(buttonId, divID) {
     var item = document.getElementById(divID);
     if (item) {
@@ -342,16 +367,16 @@ function hide(buttonId, divID) {
             //if (buttonId == 'dataLog')
             //    document.getElementById(buttonId).innerText = 'Data Log';
             if (buttonId == 'summary')
-                document.getElementById(buttonId).innerText = 'Summary';
+                document.getElementById(buttonId).innerText = 'View Summary';
             if (buttonId == 'updateButton')
                 document.getElementById(buttonId).innerText = 'Update Assets or Liabilities';
         }
     }
 }
 
-/*****  Format The Date   *******************************
-*   For future date formating hopefully?      */
+/*****  Format The Date   *******************************/
 function formatDate(datesSuck) {
+    console.log(datesSuck);
     if (datesSuck) {
         var msec = Date.parse(datesSuck);
         var d = new Date(msec);

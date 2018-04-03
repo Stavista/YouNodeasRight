@@ -59,15 +59,30 @@ function handleSummary(request, response) {
             response.status(500).json({ success: false, data: error });
         }
         else {
-            console.log("FROM MODEL: " + result);
             for (i in result) {
                 var assets = result[i].total_assets;
-                var liabilities = result[i].total_assets;
-                var workingCapital = assets - liabilities;
-                var ratio = assets / liabilities;
-                var ownersContribution = workingCapital / (liabilities + workingCapital);
-                var creditorsContribution = liabilities / (liabilities + workingCapital);
+                var liabilities = result[i].total_liabilities;
 
+                var negative = "F";
+                var ratio = (assets / liabilities);
+                var workingCapital = (assets - liabilities);
+                var ownersContribution;
+                var creditorsContribution;
+                console.log("Working cap Initialized: " + workingCapital);
+
+                if ((workingCapital <= 0)) {
+                    negative = "T";
+                    workingCapital *= -1;
+                    console.log("Working cap for negative: " + workingCapital);
+                    ownersContribution = ((workingCapital / (assets)) * 100);
+                    creditorsContribution = (ownersContribution + 100);
+                    console.log("Own for Neg: " + ownersContribution + " credit: " + creditorsContribution);
+                } else {
+                    var ownersContribution = (workingCapital / assets) * 100;
+                    var creditorsContribution;
+                    creditorsContribution = (100 - ownersContribution);
+                    console.log("Initialized Owner: " + ownersContribution + " credit: " + creditorsContribution);
+                }
                 var summary = {
                     date: result[i]._date,
                     totalAssets: assets,
@@ -76,8 +91,7 @@ function handleSummary(request, response) {
                     ratio: ratio,
                     ownersContribution: ownersContribution,
                     creditorsContribution: creditorsContribution,
-                    accountsRecievable: result[i].accounts_recievable,
-                    accountsPayable: result[i].accounts_payable
+                    negative: negative
                 }
                 calculations.push(summary);
             };
@@ -107,7 +121,7 @@ function handleDataLog(request, response) {
             //    var ratio = assets / liabilities;
             //    var ownersContribution = workingCapital / (liabilities + workingCapital);
             //    var creditorsContribution = liabilities / (liabilities + workingCapital);
-            //    //date,asset Total, Liability Total, Working Capital, Cap% , ratio, cash and E, Acnt Recievable, acnt Pay
+            //    //date,asset Total, Liability Total, Working Capital, Cap% , ratio, cash and E, Acnt Receivable, acnt Pay
             //    var summary = {
             //        date: result[i]._date,
             //        totalLiabilities: liabilities,
@@ -115,7 +129,7 @@ function handleDataLog(request, response) {
             //        ratio: ratio,
             //        ownersContribution: ownersContribution,
             //        creditorsContribution: creditorsContribution,
-            //        accountsRecievable: result[i].accounts_recievable,
+            //        accountsReceivable: result[i].accounts_receivable,
             //        accountsPayable: result[i].accounts_payable
             //    }
             //    calculations.push(summary);

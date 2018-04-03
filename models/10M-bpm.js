@@ -120,30 +120,35 @@ function getLiabilities(business_id, callback) {
 function getSummary(business_id, callback) {
     //var result = [];
     //for (row in liabilityList) {
-        
-    //    liabilityList[row]._date + "</td>";
-    //     liabilityList[row].accounts_payable + "</td>";
-    //     liabilityList[row].debt_itemization + "</td>";
-    //     liabilityList[row].long_term_obligations + "</td>";
-    //     liabilityList[row].leases + "</td>";
-    //     liabilityList[row].other + "</td>";
-         
-    //}
 
-    var result = [
-        {   _date: "01/01/2018",
-            business_id: business_id,
-            total_liabilities: 15000,
-            total_assets: 250000
-        },{
-            _date: "01/01/2018",
-            business_id: business_id,
-            total_liabilities: 15000,
-            total_assets: 250000
-        }];
-    callback(null, result);
+    var client = new pg.Client(connectionString);
+    client.connect(function (err) {
+        if (err) {
+            console.log("Error connecting to DB: ")
+            console.log(err);
+            callback(err, null);
+        }
 
-    //return result;
+        var sql = 'SELECT l._date, l.business_id, SUM(l.accounts_payable + l.debt_itemization + l.long_term_obligations + l.leases + l.other)AS total_liabilities, SUM(a.cash_and_equivalents + a.accounts_receivable + a.inventory + a.other) AS total_assets FROM liabilities l JOIN business b ON l.business_id = b.id JOIN assets a ON a._date = l._date AND a.business_id = b.id WHERE b.id = $1::int GROUP BY l.business_id, l._date ORDER BY l._date DESC';
+        var params = [business_id];
+
+        var query = client.query(sql, params, function (err, result) {
+            client.end(function (err) {
+                if (err) throw err;
+            });
+
+            if (err) {
+                console.log("Error in query: ")
+                console.log(err);
+                callback(err, null);
+            }
+
+            console.log("Found result: " + JSON.stringify(result.rows));
+
+            callback(null, result.rows);
+        });
+    });
+
 }
 //Data Log: Pull needed info from assets and liabilites for specified business
 function getDataLog(business_id, callback) {
@@ -179,14 +184,14 @@ function getDataLog(business_id, callback) {
         business_id: business_id,
         total_liabilities: 15000,
         total_assets: 250000,
-        accounts_recievable: 12000,
+        accounts_receivable: 12000,
         accounts_payable: 10000
     }, {
         _date: "01/01/2018",
         business_id: business_id,
         total_liabilities: 15000,
         total_assets: 250000,
-        accounts_recievable: 12000,
+        accounts_receivable: 12000,
         accounts_payable: 10000
     }];
     callback(null, result);
@@ -205,7 +210,7 @@ function updateAssets(assets, callback) {
             console.log(err);
             callback(err, null);
         }
-        var sql = "INSERT INTO assets(_date, business_id, cash_and_equivalents, accounts_recievable, inventory, other)"
+        var sql = "INSERT INTO assets(_date, business_id, cash_and_equivalents, accounts_receivable, inventory, other)"
             + "VALUES($1::Date, $2::int, $3::int, $4::int, $5::int, $6::int)";
         var params = [assets.date, assets.id, assets.c_e, assets.a_r, assets.inv, assets.other];
 

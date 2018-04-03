@@ -35,6 +35,7 @@ CREATE TABLE liabilities
     other DECIMAL
 );
 
+
 CREATE TABLE date_log
 (
     id SERIAL NOT NULL PRIMARY KEY,
@@ -85,3 +86,6 @@ INSERT INTO date_log(_date, assets_id, liabilities_id, business_id) VALUES
 CREATE USER temp WITH PASSWORD 'pass';
 GRANT SELECT, INSERT, UPDATE ON _user, assets, business, date_log, liabilities TO temp;
 GRANT USAGE, SELECT ON SEQUENCE _user_id_seq, assets_id_seq, business_id_seq, date_log_id_seq, liabilities_id_seq TO temp;
+
+/*Practice Query*/
+SELECT l._date, l.business_id, SUM(l.accounts_payable + l.debt_itemization + l.long_term_obligations + l.leases + l.other)AS total_liabilities, SUM(a.cash_and_equivalents + a.accounts_receivable + a.inventory + a.other) AS total_assets FROM liabilities l JOIN business b ON l.business_id = b.id JOIN assets a ON a._date = l._date AND a.business_id = b.id WHERE b.id = 2 GROUP BY l.business_id, l._date ORDER BY l._date DESC;
