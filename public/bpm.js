@@ -11,16 +11,7 @@ function getBusinessId() {
 function bizSelect() {
     var bizId = getBusinessId();
     //Make sure all formats go hidden so the past business info doesn't show
-    document.getElementById('hideAssetHistory').className = 'hidden';
-    document.getElementById('assets').innerText = 'View Asset History';
-
-    document.getElementById('hideLiabilityHistory').className = 'hidden';
-    document.getElementById('liabilities').innerText = 'View Liability History';
-
-    document.getElementById('hideSummary').className = 'hidden';
-    document.getElementById('summary').innerText = 'View Summary';
-
-
+    hideAll();
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
@@ -259,6 +250,8 @@ function summary() {
 /*****   INSERT ASSETS   *******************************/
 function insertAssets() {
     var bizId = getBusinessId();
+    //Make sure all formats go hidden so the outdated business info doesn't show
+    hideAll();
     //'/updateAssets/:id/:date/:c_e/:a_r/:inv/:other'
     var c_e = document.getElementById("inputCash&Equivalents").value;
     var a_r = document.getElementById("inputAccountsReceivable").value;
@@ -299,7 +292,8 @@ function insertAssets() {
 
 /*****   INSERT LIABILITIES   *******************************/
 function insertLiabilities() {
-
+    //Make sure all formats go hidden so the outdated business info doesn't show
+    hideAll();
     var bizId = getBusinessId();
     var a_p = document.getElementById("inputAccountsPayable").value;
     var debt = document.getElementById("inputDebtItemization").value;
@@ -338,7 +332,22 @@ function insertLiabilities() {
     document.getElementById("inputLeases").value = "";
     document.getElementById("inputLiabilitiesOther").value = "";
 }
+/*****   HIDE AND UNHIDE   *******************************
+*   Hide, Unhide, and Change text in button in ALL to reflect that      */
+function hideAll() {
+    document.getElementById('hideAssetHistory').className = 'hidden';
+    document.getElementById('assets').innerText = 'View Asset History';
 
+    document.getElementById('hideLiabilityHistory').className = 'hidden';
+    document.getElementById('liabilities').innerText = 'View Liability History';
+
+    document.getElementById('hideSummary').className = 'hidden';
+    document.getElementById('summary').innerText = 'View Summary';
+    
+    document.getElementById('updateForms').className = 'hidden';
+    document.getElementById('updateButton').innerText = 'Update Assets or Liabilities';
+
+}
 /*****   HIDE AND UNHIDE   *******************************
 *   Hide, Unhide, and Change text in button to reflect that      */
 function hide(buttonId, divID) {
