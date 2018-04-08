@@ -108,12 +108,12 @@ button {
         /*Dark Orange*/
         background-color: #ffa460;
     }
-.insert {
+.insert:hover {
     /*Light Green*/
     background-color: #e0ffaf;
 }
 
-    .insert:hover {
+    .insert {
         /*Dark Green*/
         background-color: #b8e05c;
     }
@@ -130,7 +130,7 @@ button {
 
 .tableButtons button {
         flex-grow: 1;
-        margin:0em 1em 0em 1em;
+        margin:0em .5em 0em .5em;
 }
 
 table {

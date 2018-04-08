@@ -77,17 +77,24 @@
       <br />
 
       <div class="center">
-        <button style="max-width: 50em" id="updateButton" onclick="hide(this.id, 'updateForms')">Update Assets or Liabilities</button>
       </div>      <!-- end of hidden div until business is selected -->
 
 
       <h2>Financial History: </h2>
       <div class="tableButtons">
+        <button style="max-width: 50em" id="updateButton" onclick="hide(this.id, 'updateForms')">Update Assets or Liabilities</button>
+        <button class='financeButton' id="summary" type='submit' onclick='summary()'>Summary</button>
         <button class='financeButton' id="assets" type='submit' onclick='assets()'>View Asset History</button>
         <button class='financeButton' id="liabilities" type='submit' onclick='liabilities()'>View Liability History</button>
         <!--<button class='financeButton' id="dataLog" type='submit' onclick='dataLog()'>Data Log</button>-->
-        <button class='financeButton' id="summary" type='submit' onclick='summary()'>Summary</button>
       </div>
+
+      <!-- Liability History Table HIDDEN -->
+      <div id="hideSummary" class="hidden">
+        <h3>Financial Summary For <span class="bizName"></span></h3>
+        <div><span id="summaryTable"></span></div>
+      </div>
+
       <!-- Asset History Table HIDDEN -->
       <div id="hideAssetHistory" class="hidden">
         <h3>Asset History For <span class="bizName"></span></h3>
@@ -101,15 +108,11 @@
       </div>
 
       <!-- Data Log Table HIDDEN
-      <div id="hideDataLog" class="hidden">
-        <h3>Data Log For <span class="bizName"></span></h3>
-        <span id="dataLogTable"></span>
-      </div>
-        <!-- Liability History Table HIDDEN -->
-      <div id="hideSummary" class="hidden">
-        <h3>Financial Summary For <span class="bizName"></span></h3>
-        <div><span id="summaryTable"></span></div>
-      </div>
+  <div id="hideDataLog" class="hidden">
+    <h3>Data Log For <span class="bizName"></span></h3>
+    <span id="dataLogTable"></span>
+  </div>-->
+
     </div>
   </div>
 </body>
