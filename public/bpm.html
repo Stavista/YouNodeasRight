@@ -8,83 +8,108 @@
   <link rel="stylesheet" type="text/css" href="stylesheets\bpm.css" />
 </head>
 <body>
+  <div class="center">
+    <div class="transBox"></div>
+  </div>  <div class="content">
+    <h1><span class='bizName'>Select a Business to see it's</span> Financials:</h1>
 
-  <h1><span class='bizName'>Select a Business to see it's</span> Financials:</h1>
-  <input type='hidden' id='bizId' value='' />
-  <!-- Business Selection -->
-  <select id="bizSelect" onchange="bizSelect()">
-    <option disabled selected value> -- Select a Business -- </option>
-    <option value="1"><h1>Frozen Frame</h1></option>
-    <option value="2"><h1>Dealions</h1></option>
-    <option value="3"><h1>Meta Booth</h1></option>
-    <option value="4"><h1>PorTable</h1></option>
-  </select>
-  <br />
-
-  <!-- Update Assets and Liabilities Buttons are hidden until a business is selected -->
-  <div id="show" class="hidden">
-
-    <div id="updateForms" class="hidden">
-      <h2>What's your current financial standing?</h2>
-      <p>Note that once you commit to Log, you will not be able to alter or remove financial information logged</p>
-
-        Date: <input id="inputDate" type="date" name="date"><br />
-
-        <h3>Assets</h3>
-        Cash and Equivalents:<input id="inputCash&Equivalents" type="number" name="c_e" required><br />
-        Accounts Receivable: <input id="inputAccountsReceivable" type="number" name="ar" required><br />
-        Inventory: <input id="inputInventory" type="number" name="inventory" required><br />
-        Other: <input id="inputAssetsOther" type="number" name="a_other" required><br />
-        <br />
-        <button class='financeButton' onclick='insertAssets()'>Insert Assets Log</button>
-
-        <br /><br />
-
-        <h3>Liabilities</h3>
-
-        Accounts Payable: <input id="inputAccountsPayable" type="number" name="ap" required><br />
-        Debt Itemization: <input id="inputDebtItemization" type="number" name="di" required><br />
-        Long Term Obligations: <input id="inputLongTermObligations" type="number" name="lto" required><br />
-        Leases: <input id="inputLeases" type="number" name="leases" required><br />
-        Other: <input id="inputLiabilitiesOther" type="number" name="l_other" required><br />
-        <br />
-
-        <button class='financeButton' onclick='insertLiabilities()'>Insert Liabilities Log</button>
-        <br />
-        <br />
-        <button class='financeButton' onclick='insertLiabilities(); insertAssets();'>Insert to Both</button>
-    </div>
+    <!-- Business Selection -->
+    <select id="bizSelect" onchange="bizSelect()">
+      <option disabled selected value> -- Select a Business -- </option>
+      <option value="1"><h1>Frozen Frame</h1></option>
+      <option value="2"><h1>Dealions</h1></option>
+      <option value="3"><h1>Meta Booth</h1></option>
+      <option value="4"><h1>PorTable</h1></option>
+    </select>
     <br />
 
-    <button id="updateButton" onclick="hide(this.id, 'updateForms')">Update Assets or Liabilities</button>
-    <!-- end of hidden div until business is selected -->
-    <h3>Financial History: </h3>
-    <button class='financeButton' id="assets" type='submit' onclick='assets()'>View Asset History</button>
-    <button class='financeButton' id="liabilities" type='submit' onclick='liabilities()'>View Liability History</button>
-    <!--<button class='financeButton' id="dataLog" type='submit' onclick='dataLog()'>Data Log</button>-->
-    <button class='financeButton' id="summary" type='submit' onclick='summary()'>Summary</button>
+    <!-- Update Assets and Liabilities Buttons are hidden until a business is selected -->
+    <div id="show" class="hidden">
 
-    <!-- Asset History Table HIDDEN -->
-    <div id="hideAssetHistory" class="hidden">
-      <h3>Asset History For <span class="bizName"></span></h3>
-      <span id="assetTable"></span>
-    </div>
+      <div id="updateForms" class="hidden">
+        <h2>What's your current financial standing?</h2>
+        <p style="margin-left: -4%">Note that once you commit to Log, you will not be able to alter or remove financial information logged</p>
 
-    <!-- Liability History Table HIDDEN -->
-    <div id="hideLiabilityHistory" class="hidden">
-      <h3>Liability History For <span class="bizName"></span></h3>
-      <span id="liabilityTable"></span>
-    </div>
+        <!-- Date -->
+        <div class="col">
+          <div class="row">
+            <h3 style="margin: 0%">Date:</h3>
+            <input style="margin: 0% 0% 1% 3%; max-width: 20em;" id="inputDate" type="date" name="date">
+          </div>
+          (Optional - defaults to current day and time)
+        </div>
 
-    <!-- Data Log Table HIDDEN 
-  <div id="hideDataLog" class="hidden">
-    <h3>Data Log For <span class="bizName"></span></h3>
-    <span id="dataLogTable"></span>
-  </div>
-    <!-- Liability History Table HIDDEN -->
-    <div id="hideSummary" class="hidden">
-      <h3>Financial Summary For <span class="bizName"></span></h3>
-      <span id="summaryTable"></span>
+        <div class="row">
+          <!-- Asset Log -->
+          <div class="assetLog margin col">
+            <h3>Assets</h3>
+            Cash and Equivalents:<input id="inputCash&Equivalents" type="number" name="c_e" required><br />
+            Accounts Receivable: <input id="inputAccountsReceivable" type="number" name="ar" required><br />
+            Inventory: <input id="inputInventory" type="number" name="inventory" required><br />
+            Other: <input id="inputAssetsOther" type="number" name="a_other" required><br />
+            <br />
+            <div class="center">
+              <button class='insert' onclick='insertAssets()'>Insert Assets Log</button>
+            </div>
+          </div>
+          <!-- Liabilitity Log -->
+          <div class="liabilityLog margin col">
+            <h3>Liabilities</h3>
+            Accounts Payable: <input id="inputAccountsPayable" type="number" name="ap" required><br />
+            Debt Itemization: <input id="inputDebtItemization" type="number" name="di" required><br />
+            Long Term Obligations: <input id="inputLongTermObligations" type="number" name="lto" required><br />
+            Leases: <input id="inputLeases" type="number" name="leases" required><br />
+            Other: <input id="inputLiabilitiesOther" type="number" name="l_other" required><br />
+            <br />
+            <div class="center">
+              <button class='insert' onclick='insertLiabilities()'>Insert Liabilities Log</button>
+            </div>            <br />
+          </div>
+        </div>
+
+
+        <div class="center">
+          <button style="max-width: 70em" class='insert' onclick='insertLiabilities(); insertAssets();'>Insert to Both</button>
+        </div>
+        <br />
+        <br />
+      </div>
+      <br />
+
+      <div class="center">
+        <button style="max-width: 50em" id="updateButton" onclick="hide(this.id, 'updateForms')">Update Assets or Liabilities</button>
+      </div>      <!-- end of hidden div until business is selected -->
+
+
+      <h2>Financial History: </h2>
+      <div class="tableButtons">
+        <button class='financeButton' id="assets" type='submit' onclick='assets()'>View Asset History</button>
+        <button class='financeButton' id="liabilities" type='submit' onclick='liabilities()'>View Liability History</button>
+        <!--<button class='financeButton' id="dataLog" type='submit' onclick='dataLog()'>Data Log</button>-->
+        <button class='financeButton' id="summary" type='submit' onclick='summary()'>Summary</button>
+      </div>
+      <!-- Asset History Table HIDDEN -->
+      <div id="hideAssetHistory" class="hidden">
+        <h3>Asset History For <span class="bizName"></span></h3>
+        <div><span id="assetTable"></span></div>
+      </div>
+
+      <!-- Liability History Table HIDDEN -->
+      <div id="hideLiabilityHistory" class="hidden">
+        <h3>Liability History For <span class="bizName"></span></h3>
+        <div><span id="liabilityTable"></span></div>
+      </div>
+
+      <!-- Data Log Table HIDDEN
+      <div id="hideDataLog" class="hidden">
+        <h3>Data Log For <span class="bizName"></span></h3>
+        <span id="dataLogTable"></span>
+      </div>
+        <!-- Liability History Table HIDDEN -->
+      <div id="hideSummary" class="hidden">
+        <h3>Financial Summary For <span class="bizName"></span></h3>
+        <div><span id="summaryTable"></span></div>
+      </div>
     </div>
   </div>
 </body>

@@ -1,15 +1,15 @@
 var express = require('express');
 var app = express();
 
-var bpmController = require('./controllers/10C-bpm.js'); 
+var bpmController = require('./controllers/10C-bpm.js');
 //var pg = require("pg"); //Postgres
 //const connectionString = "postgres://temp:pass@localhost:5432/businessList";
 
 var bodyParser = require('body-parser');
-app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.json());       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
-  extended: true
-})); 
+    extended: true
+}));
 
 
 app.set('port', (process.env.PORT || 5000));
@@ -28,6 +28,6 @@ app.post('/updateAssets/:id/:date/:c_e/:a_r/:inv/:other', bpmController.sendAsse
 app.post('/updateLiabilities/:id/:date/:a_p/:debt/:lto/:leases/:other', bpmController.sendLiabilities);
 
 
-app.listen(app.get('port'), function() {
-	console.log("Now listening on port " + app.get('port'));
+app.listen(app.get('port'), function () {
+    console.log("Now listening on port " + app.get('port'));
 });

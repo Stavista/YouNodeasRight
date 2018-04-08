@@ -51,7 +51,7 @@ function assets() {
                 text += "<th>Accounts Receivable</th>";
                 text += "<th>Inventory</th>";
                 text += "<th>Other</th></tr><tbody>";
-                       
+
                 var row;
                 for (row in assetList) {
                     var formatedDate = formatDate(assetList[row]._date);
@@ -63,7 +63,7 @@ function assets() {
                     text += "<td>$" + Number(assetList[row].accounts_receivable).toFixed(2) + "</td>";
                     text += "<td>$" + Number(assetList[row].inventory).toFixed(2) + "</td>";
                     text += "<td>$" + Number(assetList[row].other).toFixed(2) + "</td>";
-                text += "</tr>";
+                    text += "</tr>";
                 }
                 text += "</tbody ></table >";
                 console.log(text);
@@ -81,7 +81,7 @@ function assets() {
 
 /*****   LIABILITIES   *******************************/
 function liabilities() {
-    hide( "liabilities","hideLiabilityHistory");
+    hide("liabilities", "hideLiabilityHistory");
     var bizId = getBusinessId();
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
@@ -168,18 +168,18 @@ function summary() {
                         text += "<td>" + credit + "%</td>";
                         text += "</tr>";
                     }
-                    else if (negative == "T"){
+                    else if (negative == "T") {
                         text += "<tr>";
                         text += "<td>" + formatedDate + "</td>";
                         text += "<td>$" + assets + "</td>";
                         text += "<td>$" + liabilities + "</td>";
                         text += "<td>-$" + workingCapital + "</td>";
                         text += "<td>" + ratio + "</td>";
-                        text += "<td>-"+ owner + "%</td>";
+                        text += "<td>-" + owner + "%</td>";
                         text += "<td>" + credit + "%</td>";
                         text += "</tr>";
                     }
-                    
+
                 }
                 text += "</tbody ></table >";
                 //console.log(text);
@@ -259,7 +259,7 @@ function insertAssets() {
     var o = document.getElementById("inputAssetsOther").value;
     var d = document.getElementById("inputDate").value;
     if (!d) { d = formatDate(d); }
-    
+
     //SERVER URL LOOKING FOR:'/updateAssets/:id/:date/:c_e/:a_r/:inv/:other'
     var insertURL = "/updateAssets/" + bizId + "/" + d + "/" + c_e + "/" + a_r + "/" + i + "/" + o;
 
@@ -343,7 +343,7 @@ function hideAll() {
 
     document.getElementById('hideSummary').className = 'hidden';
     document.getElementById('summary').innerText = 'View Summary';
-    
+
     document.getElementById('updateForms').className = 'hidden';
     document.getElementById('updateButton').innerText = 'Update Assets or Liabilities';
 
