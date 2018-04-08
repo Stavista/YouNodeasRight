@@ -1,10 +1,18 @@
 ﻿body {
-    background-image: url("https://cdn.pixabay.com/photo/2017/09/07/08/54/money-2724241_1280.jpg");
+    background-image: url("../money.JPG");
     background-repeat: no-repeat;
     background-position: center;
     background-attachment: fixed;
     background-size: cover;
     padding: 2% 10% 5% 10%;
+}
+
+img {
+    height: 100%;
+    max-width: 800px;
+    display: block;
+    margin: auto;
+    margin-top: 3em;
 }
 
 .content {
@@ -171,10 +179,4 @@ tr:nth-child(even) {
     display: block;
 }
 
-img {
-    width: 95%;
-    max-width: 800px;
-    display: block;
-    margin: auto;
-    margin-top: 3em;
-}
+
